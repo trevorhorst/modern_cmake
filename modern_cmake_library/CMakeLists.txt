@@ -25,11 +25,13 @@ add_library(
         ${SOURCE}
     )
 
+# Sets the version property for the target library
 set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES
         VERSION ${PROJECT_VERSION}
-        PUBLIC_HEADER ${INCLUDE}
+        # EXPORT_NAME ${PROJECT_NAME} # This sets the name of the export, in this case t
+        # PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
 
 # Specifies include directories to use when compiling a given target
@@ -42,19 +44,33 @@ target_include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-set( INSTALL_DIR "$ENV{PWD}" )
+# Installation instructions
+
+include(GNUInstallDirs)
+
+# set( INSTALL_DIR "$ENV{PWD}" )
 
 install(
     TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}Config
-    # Just trying to install to "lib" or "bin" doesn't act as I expected. It looks
-    # like you need a full path hence the "$ENV{PWD}
-    LIBRARY DESTINATION "${INSTALL_DIR}/lib"
-    ARCHIVE DESTINATION "${INSTALL_DIR}/lib"
-    RUNTIME DESTINATION "${INSTALL_DIR}/bin"
-    PUBLIC_HEADER DESTINATION "${INSTALL_DIR}/include"
-    # INCLUDES DESTINATION "$ENV{PWD}/include"
+    EXPORT ${PROJECT_NAME}Targets
+        DESTINATION "share/${PROJECT_NAME}/cmake"
+    # CMake defined library directories
+    LIBRARY
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    # CMake defined binary directories
+    RUNTIME
+        DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    # PUBLIC_HEADER
+    #     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/include"
     )
+
+install(
+    DIRECTORY include/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+    )
+
 #
 # # install(FILES test.h DESTINATION include)
 #
@@ -66,18 +82,11 @@ install(
 #     )
 #
 
-configure_file(FawkesCore.pc.in FawkesCore.pc @ONLY)
-message( "Directory: ${CMAKE_BINARY_DIR}" )
-install(
-    FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc
-    DESTINATION $ENV{PWD}/pkgconfig)
-
-install(
-    EXPORT
-        ${PROJECT_NAME}Config
-    DESTINATION
-        "${INSTALL_DIR}/share/${PROJECT_NAME}/cmake"
-        )
+# configure_file(FawkesCore.pc.in FawkesCore.pc @ONLY)
+# message( "Directory: ${CMAKE_BINARY_DIR}" )
+# install(
+#     FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc
+#     DESTINATION $ENV{PWD}/pkgconfig)
 
 export(
     TARGETS
@@ -85,4 +94,4 @@ export(
     NAMESPACE
         Fawkes::
     FILE
-        "${PROJECT_NAME}Config.cmake")
+        "${PROJECT_NAME}Targets.cmake")

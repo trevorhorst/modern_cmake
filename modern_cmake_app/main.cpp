@@ -1,12 +1,11 @@
-#include <iostream>
+#include "stdio.h"
 
-#include "core/core.h"
-
-using namespace std;
+#include "FawkesCore/core/core.h"
 
 int main()
 {
-    cout << "Hello World!" << endl;
+    Library::Core core;
+    printf( "Hello World\n" );
     return 0;
 }
 
