@@ -1,6 +1,6 @@
 #include "stdio.h"
 
-#include "FawkesCore/core/core.h"
+#include "core/core.h"
 
 int main()
 {
