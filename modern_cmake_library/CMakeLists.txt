@@ -110,7 +110,10 @@ export(
         Fawkes::
     )
 
-export(
-    PACKAGE
-        ${PROJECT_NAME}
-    )
+# This seems to export the package to the ~/.cmake/packages/${PROJECT_NAME}
+# it seems like it causes Qt to put some files in there that appears to break
+# build process.
+# export(
+#     PACKAGE
+#         ${PROJECT_NAME}
+#     )
