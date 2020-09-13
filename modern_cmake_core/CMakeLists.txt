@@ -1,10 +1,10 @@
 # Good practice to always provide a minimum required version
 cmake_minimum_required( VERSION 3.5 )
 # Project is required
-project( FawkesCore
+project( ModernCMakeCore
     VERSION 0.0.1
     LANGUAGES CXX
-    DESCRIPTION "Fawkes core library"
+    DESCRIPTION "Modern CMake core library"
     )
 
 # Append include files to the INCLUDE variable
@@ -44,7 +44,7 @@ target_include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-# Installation instructions
+# Installation and export instructions #########################################
 
 include(GNUInstallDirs)
 
@@ -52,8 +52,8 @@ include(GNUInstallDirs)
 
 install(
     TARGETS ${PROJECT_NAME}
-    # EXPORT ${PROJECT_NAME}Config
-    #     DESTINATION "share/${PROJECT_NAME}/cmake"
+    # EXPORT ModernCMakeTargets
+        # DESTINATION "share/${PROJECT_NAME}/cmake"
     # CMake defined library directories
     LIBRARY
         DESTINATION "${CMAKE_INSTALL_LIBDIR}"
@@ -86,12 +86,18 @@ install(
 
 # This include is required for the version file
 include( CMakePackageConfigHelpers )
+
 write_basic_package_version_file(
     ${PROJECT_NAME}ConfigVersion.cmake
         VERSION ${PACKAGE_VERSION}
         COMPATIBILITY AnyNewerVersion
     )
 
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/ModernCMake.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/ModernCMake.cmake"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/ModernCMake"
+  )
 
 # configure_file(FawkesCore.pc.in FawkesCore.pc @ONLY)
 # message( "Directory: ${CMAKE_BINARY_DIR}" )
@@ -101,14 +107,15 @@ write_basic_package_version_file(
 
 # This makes sure we just export the target. I think this is only done locally,
 # in contrast the install will place it in the destinations you tell it to
-export(
-    TARGETS
-        ${PROJECT_NAME}
-    FILE
-        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    NAMESPACE
-        Fawkes::
-    )
+# export(
+#     TARGETS
+#         ${PROJECT_NAME}
+#     FILE
+#         # "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+#         "${PROJECT_NAME}Config.cmake"
+#     NAMESPACE
+#         ModernCMake::
+#     )
 
 # This seems to export the package to the ~/.cmake/packages/${PROJECT_NAME}
 # it seems like it causes Qt to put some files in there that appears to break
