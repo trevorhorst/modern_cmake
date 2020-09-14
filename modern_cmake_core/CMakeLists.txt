@@ -25,6 +25,8 @@ add_library(
         ${SOURCE}
     )
 
+add_library( ModernCMake::Core ALIAS ModernCMakeCore)
+
 # Sets the version property for the target library
 set_target_properties(
     ${PROJECT_NAME}

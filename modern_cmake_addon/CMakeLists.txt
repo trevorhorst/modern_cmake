@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.5 )
 
-find_package( ModernCMakeCore REQUIRED )
+# find_package( ModernCMakeCore REQUIRED )
 
 project( ModernCMakeAddOn
     VERSION 0.0.1
