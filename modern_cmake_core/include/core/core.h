@@ -8,6 +8,7 @@ class Core
 {
 public:
     Core();
+    void print( const char *toPrint );
 };
 
 } // Library
