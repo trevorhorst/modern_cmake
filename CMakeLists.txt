@@ -5,11 +5,13 @@ project( ModernCMake
     DESCRIPTION "Modern CMake library"
     )
 
-# Example application
-add_subdirectory( modern_cmake_app )
-
 # Core library build
 add_subdirectory( modern_cmake_core )
+
+# Example application
+if( BUILD_EXAMPLE_APP )
+    add_subdirectory( modern_cmake_app )
+endif()
 
 # Optional add-on library
 if( USE_ADDON )

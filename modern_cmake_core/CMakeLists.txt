@@ -7,14 +7,27 @@ project( ModernCMakeCore
     DESCRIPTION "Modern CMake core library"
     )
 
+# Configure a version file
+# Copies an <input> file to an <output> file and substitutes variable values 
+# referenced as @VAR@ or ${VAR} in the input file content. Each variable 
+# reference will be replaced with the current value of the variable, or the 
+# empty string if the variable is not defined.
+configure_file( 
+    ${PROJECT_SOURCE_DIR}/cmake/version.h.in 
+    ${PROJECT_BINARY_DIR}/version.h 
+)
+
+set( CORE_INCLUDE_DIR include/core )
+set( CORE_SOURCE_DIR src )
+
 # Append include files to the INCLUDE variable
 set( INCLUDE ${INCLUDE}
-    include/core/core.h
+    ${CORE_INCLUDE_DIR}/core.h
     )
 
 # Append source files to the SOURCE variable
 set( SOURCE ${SOURCE}
-    src/core.cpp
+    ${CORE_SOURCE_DIR}/core.cpp
     )
 
 # Add INCLUDE and SOURCE contents to the target
@@ -25,7 +38,12 @@ add_library(
         ${SOURCE}
     )
 
-add_library( ModernCMake::Core ALIAS ModernCMakeCore)
+# Create a 'ModernCMake::Core' alias to be used inside the build tree (i.e. testing)
+add_library( 
+    ModernCMake::Core   # The new alias
+    ALIAS 
+        ${PROJECT_NAME}
+    )
 
 # Sets the version property for the target library
 set_target_properties(
@@ -36,6 +54,22 @@ set_target_properties(
         # PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
 
+# It's good practice to specify PUBLIC/PRIVATE when using target_*
+target_compile_options(
+    ${PROJECT_NAME}
+    PRIVATE
+        -Wall 
+        -Wextra 
+        -pedantic
+        -O3
+)
+
+target_compile_features(
+    ${PROJECT_NAME}
+    PRIVATE 
+        cxx_std_14
+)
+
 # Specifies include directories to use when compiling a given target
 target_include_directories(
     ${PROJECT_NAME}
@@ -44,7 +78,7 @@ target_include_directories(
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-    )
+)
 
 # Installation and export instructions #########################################
 

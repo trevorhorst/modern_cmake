@@ -1,11 +1,9 @@
-#include "stdio.h"
-
-#include "core/core.h"
+#include <ModernCMakeCore/core/core.h>
 
 int main()
 {
     Library::Core core;
-    printf( "Hello World\n" );
+    core.print( "Hello World\n" );
     return 0;
 }
 

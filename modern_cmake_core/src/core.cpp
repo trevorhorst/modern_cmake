@@ -19,7 +19,7 @@ Core::Core()
  */
 void Core::print( const char *toPrint )
 {
-    printf( "%s\n", toPrint );
+    printf( "%s", toPrint );
 }
 
 }
